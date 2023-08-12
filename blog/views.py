@@ -15,8 +15,8 @@ def post_list(request):
     return render(request, 'blog/list.html', context)
 
 
-def post_detail(request, pk):
-    post = get_object_or_404(Post, id=pk, status=Post.Status.PUBLISHED)
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id, status=Post.Status.PUBLISHED)
     context = {
         'post': post,
     }
