@@ -5,19 +5,19 @@
 
 
 {% block content %}
-    <h1>Post List</h1>
+        <h1  class="post-list">Post List</h1>
 
-    <ol style="--length: {{ posts|length }}" role="list">
-        {% for post in posts %}
-            <li style="--i: {{ forloop.counter }}">
-                <h3>
-                    <a style="text-decoration: none; color: black;" href="{{ post.get_absolute_url }}">
-                        {{ post.title }}
-                    </a>
-                </h3>
-                <p>{{ post.description|truncatewords:5 }}</p>
-            </li>
-        {% endfor %}
-    </ol>
-    {% include 'partials/pagination.html' with page=posts %}
+        <ol style="--length: {{ posts|length }}" role="list">
+            {% for post in posts %}
+                <li style="--i: {{ forloop.counter }}">
+                    <h3 class="post-title">
+                        <a style="text-decoration: none; color: black;" href="{{ post.get_absolute_url }}">
+                            {{ post.title }}
+                        </a>
+                    </h3>
+                    <p class="descr">{{ post.description|truncatewords:5 }}</p>
+                </li>
+            {% endfor %}
+        </ol>
+        {% include 'partials/pagination.html' with page=posts %}
 {% endblock %}
