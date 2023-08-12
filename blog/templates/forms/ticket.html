@@ -1,0 +1,13 @@
+{% extends 'parent/base.html' %}
+
+{% block title %}Ticket Form{% endblock %}
+
+
+{% block content %}
+    <br>
+    <form action="" method="post" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="ثبت تیکت">
+    </form>
+{% endblock %}

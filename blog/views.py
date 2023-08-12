@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
-from blog.models import Post
+from blog.models import *
+from blog.forms import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -30,3 +31,16 @@ def post_detail(request, post_id):
         'post': post,
     }
     return render(request, 'blog/detail.html', context)
+
+
+def ticket(request):
+    if request.method == "POST":
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            Ticket.objects.create(message=cd['message'], name=cd['name'], email=cd['email'], phone=cd['phone'],
+                                  subject=cd['subject'])
+            return redirect('blog:home')
+    else:
+        form = TicketForm()
+    return render(request, 'forms/ticket.html', {'form': form})
