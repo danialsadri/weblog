@@ -1,6 +1,8 @@
 from django import template
 from django.db.models import Count
+from django.utils.safestring import mark_safe
 from blog.models import Post, Comment
+from markdown import markdown
 
 register = template.Library()
 
@@ -29,3 +31,8 @@ def most_popular_posts(count=5):
 def latest_posts(count=5):
     l_posts = Post.published.order_by('-publish')[:count]
     return {'l_posts': l_posts}
+
+
+@register.filter(name='markdown')
+def to_markdown(text):
+    return mark_safe(markdown(text))
