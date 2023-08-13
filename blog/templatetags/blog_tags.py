@@ -17,3 +17,9 @@ def total_comments():
 @register.simple_tag()
 def last_post_date():
     return Post.published.last().publish
+
+
+@register.inclusion_tag('partials/latest_posts.html')
+def latest_posts(count=5):
+    l_posts = Post.published.order_by('-publish')[:count]
+    return {'l_posts': l_posts}
