@@ -7,7 +7,43 @@
     <br>
     <form action="" method="post" novalidate>
         {% csrf_token %}
-        {{ form.as_p }}
+        متن:
+        <textarea name="message" required>
+            {% if form.message.value %}{{ form.message.value }}{% endif %}
+        </textarea><br><br>
+
+        نام و نام خانوادگی:
+        <input type="text" name="name" required {% if form.name.value %}value="{{ form.name.value }}"{% endif %}><br><br>
+
+        ایمیل:
+        <input type="text" name="email" required {% if form.email.value %}value="{{ form.email.value }}"{% endif %}><br><br>
+
+        شماره تماس:
+        <input type="text" name="phone" required {% if form.phone.value %}value="{{ form.phone.value }}"{% endif %}><br><br>
+
+        موضوع:
+        <select name="subject">
+            <option value="پیشنهاد" {% if form.subject.value == 'پیشنهاد' %}selected{% endif %}>پیشنهاد</option>
+            <option value="انتقاد" {% if form.subject.value == 'انتقاد' %}selected{% endif %}>انتقاد</option>
+            <option value="گزارش" {% if form.subject.value == 'گزارش' %}selected{% endif %}>گزارش</option>
+        </select><br><br>
+
         <input type="submit" value="ثبت تیکت">
     </form>
+
+    {% if form.errors %}
+        لطفا خطاهای زیر را اصلاح کنید. <br>
+        {% for field in form %}
+        	{% if field.errors %}
+                {% for error in field.errors %}
+                	{{ field.label }}: {{ error }}<br>
+                {% endfor %}
+        	{% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if form.non_field_errors %}
+    	{{ form.non_field_errors }}
+    {% endif %}
+
 {% endblock %}
