@@ -6,8 +6,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 
 
-def home(request):
-    return HttpResponse('<h1>hello world</h1>')
+def index(request):
+    return render(request, 'blog/index.html')
 
 
 def post_list(request):
@@ -45,7 +45,7 @@ def ticket(request):
             cd = form.cleaned_data
             Ticket.objects.create(message=cd['message'], name=cd['name'], email=cd['email'], phone=cd['phone'],
                                   subject=cd['subject'])
-            return redirect('blog:home')
+            return redirect('blog:index')
     else:
         form = TicketForm()
     return render(request, 'forms/ticket.html', {'form': form})
