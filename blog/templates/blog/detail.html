@@ -8,6 +8,35 @@
     <h1 class="post-detail">{{ post.title }}</h1>
     <p class="author">author: {{ post.author }}</p>
     <span class="pub-date">{{ post.publish|jformat:"%Y/%m/%d-%H:%M" }}</span>
-    <div class="des"> <p class="des-p">{{ post.description | linebreaks }}</p></div>
+    <div class="des"><p class="des-p">{{ post.description | linebreaks }}</p></div>
     <hr>
+
+    {% with comments.count as cm_count %}
+        <div>{{ cm_count }} comment{{ cm_count|pluralize }}</div><br>
+        <div>
+            {% for comment in comments %}
+                <hr>
+                <br>{{ comment.name }}<br>
+                <br>{{ comment.body|linebreaks }}<br>
+                <hr>
+            {% empty %}
+                <p>هیچ کامنتی وجود ندارد.</p><br>
+            {% endfor %}
+        </div>
+    {% endwith %}
+    <br><br>
+    <form action="{% url 'blog:post_comment' post.id %}" method="post" novalidate>
+        {% csrf_token %}
+        <div>
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.name.errors }}<br><br>
+        </div>
+        <div>
+            {{ form.body.label_tag }}
+            {{ form.body }}
+            {{ form.body.errors }}<br><br>
+        </div>
+        <input type="submit" value="افزودن کامنت"><br><br>
+    </form>
 {% endblock %}
