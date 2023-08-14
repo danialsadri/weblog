@@ -62,3 +62,17 @@ def post_comment(request, post_id):
         comment.save()
     context = {'post': post, 'comment': comment, 'form': form}
     return render(request, 'forms/comment.html', context)
+
+
+def post_create(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('blog:index')
+    else:
+        form = PostForm()
+    context = {'form': form}
+    return render(request, 'forms/post.html', context)

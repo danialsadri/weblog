@@ -2,6 +2,32 @@ from django import forms
 from .models import *
 
 
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'description', 'slug', 'reading_time']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'عنوان'}),
+            'description': forms.Textarea(attrs={'placeholder': 'توضیحات'}),
+        }
+
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        if title:
+            if len(title) < 5:
+                raise forms.ValidationError('عنوان خیلی کوتاه هست.')
+            else:
+                return title
+
+    def clean_description(self):
+        description = self.cleaned_data['description']
+        if description:
+            if len(description) > 500:
+                raise forms.ValidationError('توضیحات نباید بیشتر از 500 کاراکتر باشد.')
+            else:
+                return description
+
+
 class TicketForm(forms.Form):
     SUBJECT_CHOICES = (
         ('پیشنهاد', 'پیشنهاد'),

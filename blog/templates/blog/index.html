@@ -11,6 +11,19 @@
 
     {% latest_posts 10 %}
 
+    <h2>پست (بیشتر زمان مطالعه)</h2>
+    {% most_study_time %}
+
+    <h2>پست (کمترین زمان مطالعه)</h2>
+    {% minimum_study_time %}
+
+    <h2>فعال ترین کاربر ها</h2>
+    {% most_active_users 10 as act_users %}
+    {% for user in act_users %}
+    	<p>{{ user.username }}: with {{ user.users_count }} posts</p>
+    {% endfor %}
+
+
     <h2>محبوب ترین پست ها</h2>
     {% most_popular_posts 10 as pop_posts %}
     {% for post in pop_posts %}
