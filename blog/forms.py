@@ -73,3 +73,7 @@ class CommentForm(forms.ModelForm):
                 raise forms.ValidationError('متن کامنت بیش ازحد مجاز است.')
             else:
                 return body
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField()

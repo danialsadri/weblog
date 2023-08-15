@@ -4,6 +4,7 @@ from blog.models import *
 from blog.forms import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 
 
 def index(request):
@@ -76,3 +77,29 @@ def post_create(request):
         form = PostForm()
     context = {'form': form}
     return render(request, 'forms/post.html', context)
+
+
+# def post_search(request):
+#     query = None
+#     results = []
+#     if 'query' in request.GET:
+#         form = SearchForm(request.GET)
+#         if form.is_valid():
+#             query = form.cleaned_data['query']
+#             results1 = Post.published.filter(title__icontains=query)
+#             results2 = Post.published.filter(description__icontains=query)
+#             results = results1 | results2
+#     context = {'query': query, 'results': results}
+#     return render(request, 'blog/search.html', context)
+
+
+def post_search(request):
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.published.filter(Q(title__icontains=query) | Q(description__icontains=query))
+    context = {'query': query, 'results': results}
+    return render(request, 'blog/search.html', context)
