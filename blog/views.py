@@ -5,6 +5,7 @@ from blog.forms import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.db.models import Q
+from django.contrib.postgres.search import SearchVector
 
 
 def index(request):
@@ -93,6 +94,30 @@ def post_create(request):
 #     return render(request, 'blog/search.html', context)
 
 
+# def post_search(request):
+#     query = None
+#     results = []
+#     if 'query' in request.GET:
+#         form = SearchForm(request.GET)
+#         if form.is_valid():
+#             query = form.cleaned_data['query']
+#             results = Post.published.filter(Q(title__icontains=query) | Q(description__icontains=query))
+#     context = {'query': query, 'results': results}
+#     return render(request, 'blog/search.html', context)
+
+
+# def post_search(request):
+#     query = None
+#     results = []
+#     if 'query' in request.GET:
+#         form = SearchForm(request.GET)
+#         if form.is_valid():
+#             query = form.cleaned_data['query']
+#             results = Post.published.filter(Q(title__search=query) | Q(description__search=query))
+#     context = {'query': query, 'results': results}
+#     return render(request, 'blog/search.html', context)
+
+
 def post_search(request):
     query = None
     results = []
@@ -100,6 +125,6 @@ def post_search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            results = Post.published.filter(Q(title__icontains=query) | Q(description__icontains=query))
+            results = Post.published.annotate(search=SearchVector('title', 'description', 'slug')).filter(search=query)
     context = {'query': query, 'results': results}
     return render(request, 'blog/search.html', context)
