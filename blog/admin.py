@@ -7,6 +7,16 @@ admin.sites.AdminSite.site_title = 'پنل مدیریت جنگو'
 admin.sites.AdminSite.index_title = 'پنل مدیریت جنگو'
 
 
+class ImageInline(admin.StackedInline):
+    model = Image
+    extra = 0
+
+
+class CommentInline(admin.StackedInline):
+    model = Comment
+    extra = 0
+
+
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ['author', 'title', 'publish', 'status']
@@ -18,6 +28,7 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ['title']}
     list_editable = ['status']
     list_display_links = ['author', 'title']
+    inlines = [ImageInline, CommentInline]
 
 
 @admin.register(Ticket)
