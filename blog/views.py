@@ -5,7 +5,7 @@ from blog.forms import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.db.models import Q
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 
 
 def index(request):
@@ -130,6 +130,22 @@ def post_create(request):
 #     return render(request, 'blog/search.html', context)
 
 
+# def post_search(request):
+#     query = None
+#     results = []
+#     if 'query' in request.GET:
+#         form = SearchForm(request.GET)
+#         if form.is_valid():
+#             query = form.cleaned_data['query']
+#             search_query = SearchQuery(query)
+#             search_vector = SearchVector('title', 'description', 'slug')
+#             # search_vector = SearchVector('title', weight='A') + SearchVector('description', weight='B') + SearchVector('slug', 'C')
+#             search_rank = SearchRank(search_vector, search_query)
+#             results = Post.published.annotate(search=search_vector, rank=search_rank).filter(search=search_query).order_by('-rank')
+#             # results = Post.published.annotate(search=search_vector, rank=search_rank).filter(rank__gte=0.3).order_by('-rank')
+#     context = {'query': query, 'results': results}
+#     return render(request, 'blog/search.html', context)
+
 def post_search(request):
     query = None
     results = []
@@ -137,11 +153,10 @@ def post_search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
-            search_query = SearchQuery(query)
-            search_vector = SearchVector('title', 'description', 'slug')
-            # search_vector = SearchVector('title', weight='A') + SearchVector('description', weight='B') + SearchVector('slug', 'C')
-            search_rank = SearchRank(search_vector, search_query)
-            results = Post.published.annotate(search=search_vector, rank=search_rank).filter(search=search_query).order_by('-rank')
-            # results = Post.published.annotate(search=search_vector, rank=search_rank).filter(rank__gte=0.3).order_by('-rank')
+            trigram_similarity1 = TrigramSimilarity('title', query)
+            trigram_similarity2 = TrigramSimilarity('description', query)
+            results1 = Post.published.annotate(similarity=trigram_similarity1).filter(similarity__gt=0.1)
+            results2 = Post.published.annotate(similarity=trigram_similarity2).filter(similarity__gt=0.1)
+            results = (results1 | results2).order_by('-similarity')
     context = {'query': query, 'results': results}
     return render(request, 'blog/search.html', context)
