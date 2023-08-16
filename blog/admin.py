@@ -35,3 +35,11 @@ class CommentAdmin(admin.ModelAdmin):
     ordering = ['name', 'created']
     list_editable = ['active']
     list_display_links = ['post', 'name']
+
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+    list_display = ['post', 'title', 'created']
+    list_filter = [('created', JDateFieldListFilter)]
+    search_fields = ['title', 'description']
+    raw_id_fields = ['post']

@@ -84,3 +84,24 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.name}: {self.post}"
+
+
+class Image(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images', verbose_name='تصویر')
+    image_file = models.ImageField(upload_to='post_images/', verbose_name='فایل تصویر')
+    title = models.CharField(max_length=200, blank=True, null=True, verbose_name='عنوان')
+    description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
+    created = jmodels.jDateTimeField(auto_now_add=True, verbose_name='زمان ایجاد')
+
+    objects = jmodels.jManager()
+
+    class Meta:
+        ordering = ['-created']
+        indexes = [
+            models.Index(fields=['-created'])
+        ]
+        verbose_name = 'تصویر'
+        verbose_name_plural = 'تصویر ها'
+
+    def __str__(self):
+        return self.title if self.title else 'None'
