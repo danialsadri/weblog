@@ -88,11 +88,14 @@ class Comment(models.Model):
         return f"{self.name}: {self.post}"
 
 
+def get_image(instance, filename):
+    return f"post_images/{datetime.now().strftime('%Y/%m/%d')}/{filename}"
+
+
 class Image(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images', verbose_name='پست')
-    image_file = ResizedImageField(
-        upload_to=lambda instance, filename: f'post_images/{datetime.now().strftime("%Y/%m/%d")}/{filename}',
-        crop=['middle', 'center'], size=[500, 500], quality=100, verbose_name='فایل تصویر')
+    image_file = ResizedImageField(upload_to=get_image, crop=['middle', 'center'], size=[500, 500], quality=100,
+                                   verbose_name='فایل تصویر')
     title = models.CharField(max_length=200, blank=True, null=True, verbose_name='عنوان')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
     created = jmodels.jDateTimeField(auto_now_add=True, verbose_name='زمان ایجاد')
