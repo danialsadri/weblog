@@ -155,8 +155,14 @@ def post_search(request):
             query = form.cleaned_data['query']
             trigram_similarity1 = TrigramSimilarity('title', query)
             trigram_similarity2 = TrigramSimilarity('description', query)
+            trigram_similarity3 = TrigramSimilarity('title', query)
+            trigram_similarity4 = TrigramSimilarity('description', query)
             results1 = Post.published.annotate(similarity=trigram_similarity1).filter(similarity__gt=0.1)
             results2 = Post.published.annotate(similarity=trigram_similarity2).filter(similarity__gt=0.1)
-            results = (results1 | results2).order_by('-similarity')
+            results3 = Image.objects.annotate(similarity=trigram_similarity3).filter(similarity__gt=0.1)
+            results4 = Image.objects.annotate(similarity=trigram_similarity4).filter(similarity__gt=0.1)
+            results = list(results1) + list(results2) + list(results3) + list(results4)
+            results.sort(key=lambda x: x.similarity, reverse=True)
+
     context = {'query': query, 'results': results}
     return render(request, 'blog/search.html', context)

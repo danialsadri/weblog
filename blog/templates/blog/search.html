@@ -5,7 +5,7 @@
 
 {% block content %}
     {% if query %}
-        <span>{{ results.count }}:</span> <span>نتایج جستجو برای {{ query }}</span>
+        <span>{{ results|length }}:</span> <span>نتایج جستجو برای {{ query }}</span>
     {% endif %}
     {% for post in results %}
         <div>

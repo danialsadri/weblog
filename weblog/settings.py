@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     # My Apps
     'blog.apps.BlogConfig',
     # Third-Party Apps
-    'django_jalali'
+    'django_jalali',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
