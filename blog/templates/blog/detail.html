@@ -11,10 +11,19 @@
     <span class="pub-date">{{ post.publish|jformat:"%Y/%m/%d-%H:%M" }}</span>
     <div>
         {% for img in post.images.all %}
-            <img src="{{ img.image_file.url }}" alt="{{ img.title }}">
+            {% if forloop.counter <= 2 %}
+                <img src="{{ img.image_file.url }}" alt="{{ img.title }}">
+            {% endif %}
         {% endfor %}
     </div>
     <div class="des"><p class="des-p">{{ post.description | markdown }}</p></div>
+    <div>
+        {% for img in post.images.all %}
+            {% if forloop.counter > 2 %}
+                <img src="{{ img.image_file.url }}" alt="{{ img.title }}">
+            {% endif %}
+        {% endfor %}
+    </div>
     <hr>
 
     {% with comments.count as cm_count %}

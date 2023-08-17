@@ -89,7 +89,7 @@ class Comment(models.Model):
 
 
 class Image(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_images', verbose_name='پست')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images', verbose_name='پست')
     image_file = ResizedImageField(
         upload_to=lambda instance, filename: f'post_images/{datetime.now().strftime("%Y/%m/%d")}/{filename}',
         crop=['middle', 'center'], size=[500, 500], quality=100, verbose_name='فایل تصویر')
