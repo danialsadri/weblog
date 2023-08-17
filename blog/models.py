@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django_jalali.db import models as jmodels
 from django_resized import ResizedImageField
+from jdatetime import datetime
 
 
 # Managers
@@ -88,8 +89,10 @@ class Comment(models.Model):
 
 
 class Image(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images', verbose_name='پست')
-    image_file = ResizedImageField(upload_to='post_images/', crop=['middle', 'center'], size=[500, 500], quality=100, verbose_name='فایل تصویر')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_images', verbose_name='پست')
+    image_file = ResizedImageField(
+        upload_to=lambda instance, filename: f'post_images/{datetime.now().strftime("%Y/%m/%d")}/{filename}',
+        crop=['middle', 'center'], size=[500, 500], quality=100, verbose_name='فایل تصویر')
     title = models.CharField(max_length=200, blank=True, null=True, verbose_name='عنوان')
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
     created = jmodels.jDateTimeField(auto_now_add=True, verbose_name='زمان ایجاد')

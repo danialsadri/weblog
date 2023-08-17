@@ -20,6 +20,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='image',
             name='post',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='blog.post', verbose_name='پست'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post_images', to='blog.post', verbose_name='پست'),
         ),
     ]

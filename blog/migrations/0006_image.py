@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(blank=True, max_length=200, null=True, verbose_name='عنوان')),
                 ('description', models.TextField(blank=True, null=True, verbose_name='توضیحات')),
                 ('created', django_jalali.db.models.jDateTimeField(auto_now_add=True, verbose_name='زمان ایجاد')),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='blog.post', verbose_name='تصویر')),
+                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='post_images', to='blog.post', verbose_name='تصویر')),
             ],
             options={
                 'verbose_name': 'تصویر',
