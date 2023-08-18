@@ -16,7 +16,7 @@
             {% endif %}
         {% endfor %}
     </div>
-    <div class="des"><p class="des-p">{{ post.description|replace_names_with_asterisk }}</p></div>
+    <div class="des"><p class="des-p">{{ post.description|replace_names_with_asterisk|markdown }}</p></div>
     <div>
         {% for img in post.images.all %}
             {% if forloop.counter > 2 %}
