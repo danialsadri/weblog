@@ -5,9 +5,12 @@
 
 {% block content %}
     {% if query %}
-        <span>{{ results|length }}:</span> <span>نتایج جستجو برای {{ query }}</span>
+        <span>{{ post_results|length }}:</span> <span>نتایج جستجو برای {{ query }}</span><br>
+        <span>{{ image_results|length }}:</span> <span>نتایج جستجو برای {{ query }}</span>
     {% endif %}
-    {% for post in results %}
+
+    <h2>نتایج پست‌ها</h2>
+    {% for post in post_results %}
         <div>
             <hr>
             <p><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></p>
@@ -17,5 +20,18 @@
     {% empty %}
         <p>هیچ نتیجه ای یافت نشد...</p>
     {% endfor %}
+
+    <h2>نتایج تصاویر</h2>
+    {% for image in image_results %}
+        <div>
+            <hr>
+            <p><a href="{{ image.post.get_absolute_url }}">{{ image.title }}</a></p>
+            <p>{{ image.description|linebreaks }}</p>
+            <hr>
+        </div>
+    {% empty %}
+        <p>هیچ نتیجه ای یافت نشد...</p>
+    {% endfor %}
+
 
 {% endblock %}

@@ -148,7 +148,8 @@ def post_create(request):
 
 def post_search(request):
     query = None
-    results = []
+    post_results = []
+    image_results = []
     if 'query' in request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
@@ -157,12 +158,14 @@ def post_search(request):
             trigram_similarity2 = TrigramSimilarity('description', query)
             trigram_similarity3 = TrigramSimilarity('title', query)
             trigram_similarity4 = TrigramSimilarity('description', query)
-            results1 = Post.published.annotate(similarity=trigram_similarity1).filter(similarity__gt=0.1)
-            results2 = Post.published.annotate(similarity=trigram_similarity2).filter(similarity__gt=0.1)
-            results3 = Image.objects.annotate(similarity=trigram_similarity3).filter(similarity__gt=0.1)
-            results4 = Image.objects.annotate(similarity=trigram_similarity4).filter(similarity__gt=0.1)
-            results = list(results1) + list(results2) + list(results3) + list(results4)
-            results.sort(key=lambda x: x.similarity, reverse=True)
+            post_results1 = Post.published.annotate(similarity=trigram_similarity1).filter(similarity__gt=0.1)
+            post_results2 = Post.published.annotate(similarity=trigram_similarity2).filter(similarity__gt=0.1)
+            image_results1 = Image.objects.annotate(similarity=trigram_similarity3).filter(similarity__gt=0.1)
+            image_results2 = Image.objects.annotate(similarity=trigram_similarity4).filter(similarity__gt=0.1)
+            post_results = list(post_results1) + list(post_results2)
+            image_results = list(image_results1) + list(image_results2)
+            post_results.sort(key=lambda x: x.similarity, reverse=True)
+            image_results.sort(key=lambda x: x.similarity, reverse=True)
 
-    context = {'query': query, 'results': results}
+    context = {'query': query, 'post_results': post_results, 'image_results': image_results}
     return render(request, 'blog/search.html', context)
