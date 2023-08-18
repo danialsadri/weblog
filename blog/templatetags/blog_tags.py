@@ -52,3 +52,11 @@ def latest_posts(count=5):
 @register.filter(name='markdown')
 def to_markdown(text):
     return mark_safe(markdown(text))
+
+
+@register.filter()
+def replace_names_with_asterisk(value):
+    names = ['جان', 'جک']
+    for name in names:
+        value = value.replace(name, '***')
+    return value
