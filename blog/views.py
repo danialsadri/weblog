@@ -169,3 +169,10 @@ def post_search(request):
 
     context = {'query': query, 'post_results': post_results, 'image_results': image_results}
     return render(request, 'blog/search.html', context)
+
+
+def profile(request):
+    user = request.user
+    posts = Post.published.filter(author=user)
+    context = {'posts': posts, 'user': user}
+    return render(request, 'blog/profile.html', context)
