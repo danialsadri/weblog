@@ -68,12 +68,14 @@ def post_comment(request, post_id):
 
 def post_create(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            return redirect('blog:index')
+            Image.objects.create(post=post, image_file=form.cleaned_data['image1'])
+            Image.objects.create(post=post, image_file=form.cleaned_data['image2'])
+            return redirect('blog:profile')
     else:
         form = PostForm()
     context = {'form': form}

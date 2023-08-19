@@ -3,9 +3,12 @@ from .models import *
 
 
 class PostForm(forms.ModelForm):
+    image1 = forms.ImageField(label='تصویر اول')
+    image2 = forms.ImageField(label='تصویر دوم')
+
     class Meta:
         model = Post
-        fields = ['title', 'description', 'slug', 'reading_time']
+        fields = ['title', 'description', 'reading_time']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'عنوان'}),
             'description': forms.Textarea(attrs={'placeholder': 'توضیحات'}),
