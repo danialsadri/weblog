@@ -178,3 +178,11 @@ def profile(request):
     posts = Post.published.filter(author=user)
     context = {'posts': posts, 'user': user}
     return render(request, 'blog/profile.html', context)
+
+
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('blog:profile')
+    return render(request, 'forms/post_delete.html', {'post': post})
