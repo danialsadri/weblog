@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
-
+from django.contrib.auth import authenticate, login, logout
 
 def index(request):
     return render(request, 'blog/index.html')
@@ -209,3 +209,22 @@ def image_delete(request, image_id):
     image = get_object_or_404(Image, id=image_id)
     image.delete()
     return redirect('blog:profile')
+
+
+def user_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            user = authenticate(request, username=cd['username'], password=cd['password'])
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('blog:profile')
+                else:
+                    return HttpResponse('your account is disabled')
+            else:
+                return HttpResponse('you are not logged in')
+    else:
+        form = LoginForm()
+    return render(request, 'forms/login.html', {'form': form})
