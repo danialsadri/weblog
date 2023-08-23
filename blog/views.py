@@ -7,6 +7,8 @@ from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 
 def index(request):
     return render(request, 'blog/index.html')
@@ -66,6 +68,7 @@ def post_comment(request, post_id):
     return render(request, 'forms/comment.html', context)
 
 
+@login_required
 def post_create(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -173,6 +176,7 @@ def post_search(request):
     return render(request, 'blog/search.html', context)
 
 
+@login_required
 def profile(request):
     user = request.user
     posts = Post.published.filter(author=user)
@@ -180,6 +184,7 @@ def profile(request):
     return render(request, 'blog/profile.html', context)
 
 
+@login_required
 def post_delete(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
@@ -188,6 +193,7 @@ def post_delete(request, post_id):
     return render(request, 'forms/post_delete.html', {'post': post})
 
 
+@login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
@@ -205,11 +211,11 @@ def post_edit(request, post_id):
     return render(request, 'forms/post.html', context)
 
 
+@login_required
 def image_delete(request, image_id):
     image = get_object_or_404(Image, id=image_id)
     image.delete()
     return redirect('blog:profile')
-
 
 # def user_login(request):
 #     if request.method == 'POST':
@@ -228,3 +234,8 @@ def image_delete(request, image_id):
 #     else:
 #         form = LoginForm()
 #     return render(request, 'forms/login.html', {'form': form})
+
+
+# def logout_view(request):
+#     logout(request)
+#     return redirect(request.META.get('HTTP_REFERER'))
