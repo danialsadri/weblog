@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
 
 app_name = 'blog'
 urlpatterns = [
@@ -19,4 +19,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     # path('logout/', views.logout_view, name='logout'),
+    path('password_change/', PasswordChangeView.as_view(success_url='done'), name='password_change'),
+    path('password_change/done/', PasswordChangeDoneView.as_view(), name='password_change_done'),
 ]
