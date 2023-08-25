@@ -260,3 +260,16 @@ class UserPasswordResetConfirmView(PasswordResetConfirmView):
 
 class UserPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'registration/password_reset_complete.html'
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return render(request, 'registration/register_done.html', {'user': user})
+    else:
+        form = UserRegisterForm()
+    return render(request, 'registration/register.html', {'form': form})
