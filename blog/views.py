@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import *
 
 
 def index(request):
@@ -217,6 +218,7 @@ def image_delete(request, image_id):
     image.delete()
     return redirect('blog:profile')
 
+
 # def user_login(request):
 #     if request.method == 'POST':
 #         form = LoginForm(request.POST)
@@ -239,3 +241,22 @@ def image_delete(request, image_id):
 # def logout_view(request):
 #     logout(request)
 #     return redirect(request.META.get('HTTP_REFERER'))
+
+
+class UserPasswordResetView(PasswordResetView):
+    template_name = 'registration/password_reset_form.html'
+    success_url = reverse_lazy('blog:password_reset_done')
+    email_template_name = 'registration/password_reset_email.html'
+
+
+class UserPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'registration/password_reset_done.html'
+
+
+class UserPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'registration/password_reset_confirm.html'
+    success_url = reverse_lazy('blog:password_reset_complete')
+
+
+class UserPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'registration/password_reset_complete.html'

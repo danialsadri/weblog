@@ -138,3 +138,5 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = False
 LOGIN_REDIRECT_URL = '/profile/'
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/logout/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
