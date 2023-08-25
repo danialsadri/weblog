@@ -129,3 +129,24 @@ class Image(models.Model):
         storage, path = self.image_file.storage, self.image_file.path
         storage.delete(path)
         super().delete(*args, **kwargs)
+
+
+def get_image_account(instance, filename):
+    return f"account_images/{datetime.now().strftime('%Y/%m/%d')}/{filename}"
+
+
+class Account(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='account', verbose_name='کاربر')
+    date_of_birth = jmodels.jDateField(blank=True, null=True, verbose_name='تاریخ تولد')
+    bio = models.TextField(blank=True, null=True, verbose_name='بایو')
+    job = models.CharField(max_length=200, blank=True, null=True, verbose_name='شغل')
+    photo = ResizedImageField(upload_to=get_image_account, size=[500, 500], quality=100, crop=['middle', 'center'], blank=True, null=True, verbose_name='تصویر')
+
+    objects = jmodels.jManager()
+
+    def __str__(self):
+        return self.user.username
+
+    class Meta:
+        verbose_name = 'کاربر'
+        verbose_name_plural = 'کاربر ها'

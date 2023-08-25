@@ -54,3 +54,11 @@ class ImageAdmin(admin.ModelAdmin):
     list_filter = [('created', JDateFieldListFilter)]
     search_fields = ['title', 'description']
     raw_id_fields = ['post']
+
+
+@admin.register(Account)
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ['user', 'date_of_birth', 'job']
+    list_filter = [('date_of_birth', JDateFieldListFilter)]
+    search_fields = ['user']
+    raw_id_fields = ['user']
