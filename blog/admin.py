@@ -19,7 +19,7 @@ class CommentInline(admin.StackedInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['author', 'title', 'publish', 'status']
+    list_display = ['author', 'title', 'publish', 'status', 'category']
     ordering = ['title', 'publish']
     list_filter = [('publish', JDateFieldListFilter), 'status', 'author']
     search_fields = ['title', 'description']

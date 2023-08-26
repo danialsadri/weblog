@@ -20,6 +20,14 @@ class Post(models.Model):
         PUBLISHED = 'PB', 'Published'
         REJECTED = 'RJ', 'Rejected'
 
+    CATEGORY_CHOICES = (
+        ('هوش مصنوعی', 'هوش مصنوعی'),
+        ('برنامه نویسی', 'برنامه نویسی'),
+        ('بلاکچین', 'بلاکچین'),
+        ('امنیت', 'امنیت'),
+        ('سایر', 'سایر'),
+    )
+
     # relations
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_posts", verbose_name="نویسنده")
     # data fields
@@ -33,6 +41,7 @@ class Post(models.Model):
     # choice fields
     status = models.CharField(max_length=2, choices=Status.choices, default=Status.DRAFT, verbose_name="وضعیت")
     reading_time = models.PositiveIntegerField(verbose_name="زمان مطالعه")
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="سایر", verbose_name='دسته بندی')
 
     objects = jmodels.jManager()
     published = PublishedManager()
@@ -140,7 +149,8 @@ class Account(models.Model):
     date_of_birth = jmodels.jDateField(blank=True, null=True, verbose_name='تاریخ تولد')
     bio = models.TextField(blank=True, null=True, verbose_name='بایو')
     job = models.CharField(max_length=200, blank=True, null=True, verbose_name='شغل')
-    photo = ResizedImageField(upload_to=get_image_account, size=[500, 500], quality=100, crop=['middle', 'center'], blank=True, null=True, verbose_name='تصویر')
+    photo = ResizedImageField(upload_to=get_image_account, size=[500, 500], quality=100, crop=['middle', 'center'],
+                              blank=True, null=True, verbose_name='تصویر')
 
     objects = jmodels.jManager()
 
