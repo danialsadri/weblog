@@ -5,7 +5,27 @@
 
 
 {% block content %}
-    <h1 class="post-list">Post List</h1>
+    {% if category %}
+        <h1 class="post-list"><a href="{% url 'blog:post_list' %}">لیست پست ها {{ category }}</a></h1>
+    {% else %}
+        <h1 class="post-list"><a href="{% url 'blog:post_list' %}">لیست پست ها</a></h1>
+    {% endif %}
+
+    <div>
+        <a href="{% url 'blog:post_list_category' 'هوش مصنوعی' %}">هوش مصنوعی</a>
+    </div>
+    <div>
+        <a href="{% url 'blog:post_list_category' 'برنامه نویسی' %}">برنامه نویسی</a>
+    </div>
+    <div>
+        <a href="{% url 'blog:post_list_category' 'بلاکچین' %}">بلاکچین</a>
+    </div>
+    <div>
+        <a href="{% url 'blog:post_list_category' 'امنیت' %}">امنیت</a>
+    </div>
+    <div>
+        <a href="{% url 'blog:post_list_category' 'سایر' %}">سایر</a>
+    </div>
 
     <ol style="--length: {{ posts|length }}" role="list">
         {% for post in posts %}
