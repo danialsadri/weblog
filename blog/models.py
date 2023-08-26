@@ -148,5 +148,5 @@ class Account(models.Model):
         return self.user.username
 
     class Meta:
-        verbose_name = 'کاربر'
-        verbose_name_plural = 'کاربر ها'
+        verbose_name = 'اکانت'
+        verbose_name_plural = 'اکانت ها'
