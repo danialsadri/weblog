@@ -243,6 +243,15 @@ def image_delete(request, image_id):
 #     return redirect(request.META.get('HTTP_REFERER'))
 
 
+class UserPasswordChangeView(PasswordChangeView):
+    template_name = 'registration/password_change_form.html'
+    success_url = reverse_lazy('blog:password_change_done')
+
+
+class UserPasswordChangeDoneView(PasswordChangeDoneView):
+    template_name = 'registration/password_change_done.html'
+
+
 class UserPasswordResetView(PasswordResetView):
     template_name = 'registration/password_reset_form.html'
     success_url = reverse_lazy('blog:password_reset_done')
